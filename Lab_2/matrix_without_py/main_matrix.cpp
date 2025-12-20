@@ -38,7 +38,7 @@ public:
             if (r1 == r2) continue;
 
             T factor = (T)((rand() % 100) / 10.0 - 5.0); // число от -5.0 до 5.0
-            
+            // Добавление одной строки к другой хорошо было бы сделать отдельным методом, так как он ещё понадобится в расчете дтерминанта
             for (unsigned c = 0; c < n; ++c) {
                 m(r1, c) += factor * m(r2, c);
             }
@@ -72,6 +72,7 @@ public:
     void swap_rows(unsigned r1, unsigned r2) {
         if (r1 == r2) return;
         for (unsigned c = 0; c < n_cols; ++c) {
+            // лучше std::swap вместо swap руками, потому что не учтён std::move
             T temp = (*this)(r1, c);
             (*this)(r1, c) = (*this)(r2, c);
             (*this)(r2, c) = temp;
@@ -107,6 +108,7 @@ T determinant(const Matrix<T>& mat) {
 
         for (unsigned j = i + 1; j < n; ++j) {
             if (std::abs(m(j, i)) > EPS) {
+                // и вот тут как раз этот метод пригодился бы
                 T factor = m(j, i) / m(i, i);
                 for (unsigned k = i; k < n; ++k) {
                     m(j, k) -= factor * m(i, k);
@@ -131,7 +133,7 @@ void run_test(unsigned size, double target_det) {
 
     std::cout << "  Calculated: " << calc_det << std::endl;
     std::cout << "  Transposed: " << calc_det_t << std::endl;
-    
+    // Зачем же такая грубая проверка. Только сегодня обсуждали, что нужно флоаты проверять на равенство через машинное эпсилон
     if (std::abs(calc_det - target_det) < 1.0) { //грубая проверка
         std::cout << "  [OK]" << std::endl;
     } else {

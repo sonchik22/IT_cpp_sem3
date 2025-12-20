@@ -20,6 +20,7 @@ private:
     unsigned int list_size;
 
     //метод для поиска узла перед нужным индексом
+// это абсолютно правильное решение -- сделать отдельную функцию такую
     Node* get_node_before(unsigned int index) const {
         if (index == 0 || !begin) return nullptr;
         Node* curr = begin;
@@ -76,7 +77,7 @@ public:
         if (this != &other) {
 
             subforwardlist temp(other);
-
+// Комментарий аналогично вектору по поводу функции swap
             std::swap(begin, temp.begin);
             std::swap(list_size, temp.list_size);
             // temp уничтожится и заберет наши старые узлы
@@ -96,7 +97,7 @@ public:
     subforwardlist& operator=(subforwardlist&& other) noexcept {
         if (this != &other) {
             clear_internal(); // Очищаем себя
-
+// Комментарий аналогично вектору по поводу функции swap и в целом логики метода
             // Крадем данные
             begin = other.begin;
             list_size = other.list_size;
