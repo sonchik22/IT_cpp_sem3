@@ -42,12 +42,13 @@ public:
             }
         }
     }
+// Тут кстати можно было бы сделать memcpy, тогда не было бы цикла в теле функции
 
     //присваивание копированием
     subvector& operator=(const subvector& other) {
         if (this != &other) { //от самоприсваивания
             subvector temp(other);
-
+// Три строчки ниже можно вынести в отдельную функцию и использовать её так же и в move ctor 
             std::swap(mas, temp.mas);
             std::swap(top, temp.top);
             std::swap(capacity, temp.capacity);
@@ -68,6 +69,7 @@ public:
     }
 
     //присваивание перемещением
+// Тут как раз работает чисто swap. Не обязательно занулять состояние other, можно отдать ему своё состояние, тогда как раз поможем функция swap из комментария выше
     subvector& operator=(subvector&& other) noexcept {
         if (this != &other) {
             delete[] mas;
